@@ -1,82 +1,16 @@
-# =========================
-# Android / Gradle
-# =========================
-*.apk
-*.aab
-*.ap_
-*.dex
-*.class
-
-/build
-**/build/
-
-# Gradle
-.gradle/
-gradle-app.setting
-!gradle-wrapper.jar
-
-# Local Gradle config
-local.properties
-
-# =========================
-# Android Studio
-# =========================
-.idea/
-*.iml
-*.ipr
-*.iws
-
-# Navigation editor temp files
-.navigation/
-
-# Android Studio captures
-captures/
-
-# =========================
-# Logs
-# =========================
-*.log
-
-# =========================
-# OS files
-# =========================
-.DS_Store
-Thumbs.db
-
-# =========================
-# Kotlin / Java
-# =========================
-out/
-
-# =========================
-# Firebase / Secrets
-# =========================
-google-services.json
-**/google-services.json
-
-# =========================
-# OneSignal / API keys
-# =========================
-.env
-.env.*
-secrets.properties
-
-# =========================
-# Node / Backend (if repo includes backend)
-# =========================
+# Dependencies
 node_modules/
+
+# Environment variables
+.env
+
+# Logs
 npm-debug.log*
+yarn-debug.log*
 yarn-error.log*
 
-# =========================
-# Keystore files (VERY IMPORTANT)
-# =========================
-*.jks
-*.keystore
-*.pem
+# OS files
+.DS_Store
 
-# =========================
-# Temporary files
-# =========================
-*.swp
-*.tmp
+# Editor settings
+.vscode/
