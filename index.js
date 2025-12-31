@@ -19,15 +19,14 @@ app.get("/", (req, res) => {
 
 app.post("/apply", async (req, res) => {
   const {
-    jobRole,
     name,
     email,
     phone,
     city,
-    experience
+    jobRole,
   } = req.body;
 
-  if (!jobRole || !name || !email || !phone || !city) {
+  if ( !name || !email || !phone || !city || !jobRole) {
     return res.status(400).json({
       success: false,
       message: "Missing required fields"
@@ -49,12 +48,11 @@ app.post("/apply", async (req, res) => {
       subject: `New Job Application: ${jobRole}`,
       htmlContent: `
         <h2>New Job Application</h2>
-        <p><b>Job Role:</b> ${jobRole}</p>
         <p><b>Name:</b> ${name}</p>
         <p><b>Email:</b> ${email}</p>
         <p><b>Phone:</b> ${phone}</p>
         <p><b>City:</b> ${city}</p>
-        <p><b>Experience:</b> ${experience || "Not mentioned"}</p>
+        <p><b>Job Role:</b> ${jobRole}</p>
       `
     });
 
