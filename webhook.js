@@ -55,31 +55,31 @@ https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`,
 
   english: `Hello 👋  
 Join the WhatsApp group below to receive job updates 👇  
-https://chat.whatsapp.com/ENGLISH_GROUP_LINK`,
+https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`,
 
   gujarati: `Namaskar 🙏  
 Naukri updates mate niche aapel WhatsApp group join karo 👇  
-https://chat.whatsapp.com/GUJARATI_GROUP_LINK`,
+https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`,
 
   tamil: `வணக்கம் 🙏  
 வேலை வாய்ப்புகளைப் பெற கீழே உள்ள WhatsApp குழுவில் சேருங்கள் 👇  
-https://chat.whatsapp.com/TAMIL_GROUP_LINK`,
+https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`,
 
   telugu: `నమస్తే 🙏  
 ఉద్యోగ సమాచారం కోసం క్రింది WhatsApp గ్రూప్‌లో చేరండి 👇  
-https://chat.whatsapp.com/TELUGU_GROUP_LINK`,
+https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`,
 
   bengali: `নমস্কার 🙏  
 চাকরির আপডেট পেতে নিচের WhatsApp গ্রুপে যোগ দিন 👇  
-https://chat.whatsapp.com/BENGALI_GROUP_LINK`,
+https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`,
 
   marathi: `नमस्कार 🙏  
 नोकरी अपडेटसाठी खालील WhatsApp गटात सामील व्हा 👇  
-https://chat.whatsapp.com/MARATHI_GROUP_LINK`,
+https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`,
 
   malayalam: `നമസ്കാരം 🙏  
 ജോലി അപ്ഡേറ്റുകൾക്കായി താഴെ നൽകിയ WhatsApp ഗ്രൂപ്പിൽ ചേരുക 👇  
-https://chat.whatsapp.com/MALAYALAM_GROUP_LINK`
+https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`
 };
 
 /* ------------------ Send text ------------------ */
