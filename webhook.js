@@ -1,4 +1,5 @@
 require("dotenv").config();
+const processedMessageIds = new Set();     //Store processed WhatsApp message IDs (prevents duplicates)
 const express = require("express");
 const axios = require("axios");
 const mediaMap = require("./mediaMap.json");
@@ -127,6 +128,20 @@ app.post("/webhook", async (req, res) => {
       req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
 
     if (!msg || msg.type !== "text") return res.sendStatus(200);
+    const messageId = msg.id;
+
+// Ignore duplicate webhook deliveries
+    if (processedMessageIds.has(messageId)) {
+      console.log("⚠️ Duplicate message ignored:", messageId);
+      return res.sendStatus(200);
+}
+
+// Mark this message as processed
+    processedMessageIds.add(messageId);
+
+// Optional cleanup after 1 hour
+    setTimeout(() => processedMessageIds.delete(messageId), 3600000);
+    res.sendStatus(200);
 
     const text = msg.text.body;
     const from = msg.from;
