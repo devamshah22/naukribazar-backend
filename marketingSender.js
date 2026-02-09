@@ -3,7 +3,12 @@ const axios = require("axios");
 const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
 const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID;
 
-async function sendMarketingTemplate(to) {
+/**
+ * Send Marketing Template with Video + Name variable
+ * @param {string} to - phone number (no +)
+ * @param {string} name - value for {{1}}
+ */
+async function sendMarketingTemplate(to, name) {
   try {
     const response = await axios.post(
       `https://graph.facebook.com/v18.0/${PHONE_NUMBER_ID}/messages`,
@@ -18,12 +23,11 @@ async function sendMarketingTemplate(to) {
           },
           components: [
             {
-              type: "header",
+              type: "body",
               parameters: [
                 {
-                  type: "video"
-                  // ❗ DO NOT pass link or id here
-                  // Meta already knows the approved video
+                  type: "text",
+                  text: name
                 }
               ]
             }
@@ -40,16 +44,22 @@ async function sendMarketingTemplate(to) {
 
     console.log("✅ Marketing template sent", {
       to,
-      messageId: response.data?.messages?.[0]?.id
+      name,
+      messageId: response.data?.messages?.[0]?.id,
+      timestamp: new Date().toISOString()
     });
 
     return response.data;
   } catch (error) {
     console.error("❌ Marketing template failed", {
       to,
+      name,
       status: error.response?.status,
-      error: error.response?.data || error.message
+      error: error.response?.data || error.message,
+      timestamp: new Date().toISOString()
     });
+
+    return null;
   }
 }
 
