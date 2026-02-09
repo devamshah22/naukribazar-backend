@@ -3,10 +3,6 @@ const axios = require("axios");
 const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
 const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID;
 
-/**
- * Send Marketing Template (Community Invite)
- * @param {string} to - Phone number in international format (no +)
- */
 async function sendMarketingTemplate(to) {
   try {
     const response = await axios.post(
@@ -19,7 +15,19 @@ async function sendMarketingTemplate(to) {
           name: "naukri_bazar_english_community_link",
           language: {
             code: "en_US"
-          }
+          },
+          components: [
+            {
+              type: "header",
+              parameters: [
+                {
+                  type: "video"
+                  // ❗ DO NOT pass link or id here
+                  // Meta already knows the approved video
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -30,27 +38,19 @@ async function sendMarketingTemplate(to) {
       }
     );
 
-    // ✅ Success log
     console.log("✅ Marketing template sent", {
       to,
-      messageId: response.data?.messages?.[0]?.id,
-      timestamp: new Date().toISOString()
+      messageId: response.data?.messages?.[0]?.id
     });
 
     return response.data;
   } catch (error) {
-    // ❌ Error log
     console.error("❌ Marketing template failed", {
       to,
       status: error.response?.status,
-      error: error.response?.data || error.message,
-      timestamp: new Date().toISOString()
+      error: error.response?.data || error.message
     });
-
-    return null;
   }
 }
 
-module.exports = {
-  sendMarketingTemplate
-};
+module.exports = { sendMarketingTemplate };
