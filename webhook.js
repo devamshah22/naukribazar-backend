@@ -52,35 +52,35 @@ function detectLanguage(text) {
 const communityMessageMap = {
   hindi: `Namaste 🙏  
 Naukri updates ke liye niche diye gaye WhatsApp group ko join kijiye 👇  
-https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`,
+https://chat.whatsapp.com/CqXROPWSrIH5b5wQ0oKfjI`,
 
   english: `Hello 👋  
 Join the WhatsApp group below to receive job updates 👇  
-https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`,
+https://chat.whatsapp.com/CqXROPWSrIH5b5wQ0oKfjI`,
 
   gujarati: `Namaskar 🙏  
 Naukri updates mate niche aapel WhatsApp group join karo 👇  
-https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`,
+https://chat.whatsapp.com/CClaxvORPC6Fcevhf5V4fM`,
 
   tamil: `வணக்கம் 🙏  
 வேலை வாய்ப்புகளைப் பெற கீழே உள்ள WhatsApp குழுவில் சேருங்கள் 👇  
-https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`,
+https://chat.whatsapp.com/Ex3lFL6DR9c9txgZsez8Xb`,
 
   telugu: `నమస్తే 🙏  
 ఉద్యోగ సమాచారం కోసం క్రింది WhatsApp గ్రూప్‌లో చేరండి 👇  
-https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`,
+https://chat.whatsapp.com/BbOIwsFOCVW9SD3FsiwmCT`,
 
   bengali: `নমস্কার 🙏  
 চাকরির আপডেট পেতে নিচের WhatsApp গ্রুপে যোগ দিন 👇  
-https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`,
+https://chat.whatsapp.com/DfPi0PU9ytcIptlA3EDjp1`,
 
   marathi: `नमस्कार 🙏  
 नोकरी अपडेटसाठी खालील WhatsApp गटात सामील व्हा 👇  
-https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`,
+https://chat.whatsapp.com/HvbUQOk827T8Fh27N6YUqz`,
 
   malayalam: `നമസ്കാരം 🙏  
 ജോലി അപ്ഡേറ്റുകൾക്കായി താഴെ നൽകിയ WhatsApp ഗ്രൂപ്പിൽ ചേരുക 👇  
-https://chat.whatsapp.com/KyPC99aYP9jLUXQDVkotbk`
+https://chat.whatsapp.com/BV42Wmh9sda9XX3ZtlOrhl`
 };
 
 /* ------------------ Send text ------------------ */
@@ -124,27 +124,54 @@ async function sendVideo(to, mediaId) {
 /* ------------------ Receive messages ------------------ */
 app.post("/webhook", async (req, res) => {
   try {
-    const msg =
-      req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+    const value = req.body.entry?.[0]?.changes?.[0]?.value;
 
-    if (!msg || msg.type !== "text") return res.sendStatus(200);
+    // 🔔 LOG FULL PAYLOAD (keep this while debugging)
+    console.log("📩 Webhook event received:");
+    console.dir(value, { depth: null });
+
+    /* ------------------ DELIVERY STATUS UPDATES ------------------ */
+    if (value?.statuses) {
+      value.statuses.forEach(status => {
+        console.log("📦 Message status update:", {
+          messageId: status.id,
+          status: status.status, // sent, delivered, read, failed
+          recipient: status.recipient_id,
+          timestamp: status.timestamp,
+          errors: status.errors || null
+        });
+      });
+
+      // Status events do not require any reply logic
+      return res.sendStatus(200);
+    }
+
+    /* ------------------ INCOMING USER MESSAGE ------------------ */
+    const msg = value?.messages?.[0];
+
+    if (!msg || msg.type !== "text") {
+      return res.sendStatus(200);
+    }
+
     const messageId = msg.id;
 
-// Ignore duplicate webhook deliveries
+    // 🛑 Ignore duplicate webhook deliveries
     if (processedMessageIds.has(messageId)) {
       console.log("⚠️ Duplicate message ignored:", messageId);
       return res.sendStatus(200);
-}
+    }
 
-// Mark this message as processed
+    // ✅ Mark message as processed
     processedMessageIds.add(messageId);
-
-// Optional cleanup after 1 hour
-    setTimeout(() => processedMessageIds.delete(messageId), 3600000);
-    res.sendStatus(200);
+    setTimeout(() => processedMessageIds.delete(messageId), 3600000); // cleanup after 1 hour
 
     const text = msg.text.body;
     const from = msg.from;
+
+    console.log("💬 Incoming message:", {
+      from,
+      text
+    });
 
     const language = detectLanguage(text);
 
@@ -164,15 +191,9 @@ app.post("/webhook", async (req, res) => {
       console.log(`🎥 Sent ${language} video`);
     }
 
-    res.sendStatus(200);
+    return res.sendStatus(200);
   } catch (err) {
-    console.error("❌ Webhook error:", err.message);
-    res.sendStatus(200);
+    console.error("❌ Webhook error:", err);
+    return res.sendStatus(200);
   }
-});
-
-/* ------------------ Start server ------------------ */
-const PORT = process.env.WEBHOOK_PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`🚀 Webhook running on port ${PORT}`);
 });

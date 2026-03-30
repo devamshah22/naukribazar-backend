@@ -13,10 +13,8 @@ const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID;
  */
 async function sendMarketingTemplate(to) {
   try {
-    // ✅ FIXED: Changed language code from "en" to "en_GB"
-    // This matches the template's language "English (UK)" in WhatsApp Manager
     const response = await axios.post(
-      `https://graph.facebook.com/v18.0/${PHONE_NUMBER_ID}/messages`,
+      `https://graph.facebook.com/v24.0/${PHONE_NUMBER_ID}/messages`,
       {
         messaging_product: "whatsapp",
         to,
@@ -24,9 +22,8 @@ async function sendMarketingTemplate(to) {
         template: {
           name: "english_naukri_bazar",
           language: {
-            code: "en" // ← CHANGED: Was "en", now "en_GB"
+            code: "en"
           }
-          // No components needed - this is a static template
         }
       },
       {
@@ -83,17 +80,17 @@ async function checkTemplateStatus() {
   try {
     console.log('🔍 Checking template status...\n');
 
-    // Attempt with en_GB
-    console.log('📝 Attempting with en_GB...');
+    // Attempt with en
+    console.log('📝 Attempting with en...');
     const response = await axios.post(
       `https://graph.facebook.com/v18.0/${PHONE_NUMBER_ID}/messages`,
       {
         messaging_product: "whatsapp",
-        to: "+919876543210", // Replace with your test number
+        to: "919137948393 ", // Replace with your test number
         type: "template",
         template: {
           name: "naukri_bazar_english_community",
-          language: { code: "en_GB" }
+          language: { code: "en" }
         }
       },
       {
@@ -104,8 +101,8 @@ async function checkTemplateStatus() {
       }
     );
 
-    console.log('✅ Template works with en_GB!');
-    return { success: true, code: 'en_GB' };
+    console.log('✅ Template works with en!');
+    return { success: true, code: 'en' };
   } catch (error) {
     const code = error.response?.data?.error?.code;
     const msg = error.response?.data?.error?.message;
@@ -114,7 +111,7 @@ async function checkTemplateStatus() {
     console.error(`   Message: ${msg}`);
 
     if (code === 132001) {
-      console.log('\n⚠️  Template not found in en_GB translation');
+      console.log('\n⚠️  Template not found in en translation');
       console.log('   Next steps:');
       console.log('   1. Go to WhatsApp Manager');
       console.log('   2. Check template approval status');

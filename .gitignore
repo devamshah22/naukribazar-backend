@@ -14,3 +14,6 @@ yarn-error.log*
 
 # Editor settings
 .vscode/
+
+# Videos
+videos/
